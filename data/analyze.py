@@ -29,7 +29,7 @@ def splitTo5tuples(filename):
                 dst_p = dat.dport
             except:
                 pass
-            tuples = (src_a, src_p, dst_a, dst_p, prot)
+            tuples = str(src_a, src_p, dst_a, dst_p, prot)
             if tuples not in res:
                 res[tuples] = [(t, dat.data)]
             else:

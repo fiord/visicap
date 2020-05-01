@@ -1,2 +1,6 @@
 flask
 dpkt
+scipy
+scikitlearn
+numpy
+Levenshtein

@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
-import numpy as np
+from flask import *
+import pickle
+import os
+import re
 
 app = Flask(__name__)
 
@@ -8,17 +10,14 @@ app = Flask(__name__)
 def index():
     title = "Title"
     message = "Hello, fiord"
+    files = list(filter(lambda x: os.path.isfile(os.path.join("data/pcap", x)) and re.search(r"\.dat$", x), os.listdir("./data/pcap")))
+    return render_template("index.html", message=message, title=title, files=files)
 
-    return render_template("index.html", message=message, title=title)
-
-@app.route("/post", methods=["GET", "POST"])
-def post():
-    title = "Title"
-    if request.method == "POST":
-        name = request.form["name"]
-        return render_template("index.html", name=name, title=title)
-    else:
-        return redirect(url_for("index"))
+@app.route("/api/data/<filepath>")
+def apiShowData(filepath):
+    f = open("data/pcap/{0}".format(filepath), "rb")
+    res = pickle.load(f)
+    return jsonify(res)
 
 if __name__ == "__main__":
     app.debug = True
